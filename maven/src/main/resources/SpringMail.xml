@@ -11,6 +11,9 @@
 		<property name="password" value="${authentication.password}" />
 		<property name="javaMailProperties">
 			<props>
+				<!-- To ask Java mail to print out a debug message when you run a Java 
+					mail program. -->
+				<prop key="mail.debug">true</prop>
 				<prop key="mail.smtp.auth">true</prop>
 				<prop key="mail.smtp.starttls.enable">true</prop>
 			</props>

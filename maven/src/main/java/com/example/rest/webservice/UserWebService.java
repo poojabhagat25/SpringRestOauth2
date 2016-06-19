@@ -13,7 +13,7 @@ import com.example.rest.model.UserModel;
 public interface UserWebService {
 	UserDTO getUser(String authToken);
 	ResponseModel signUpUser(HttpServletRequest request, HttpServletResponse response, UserModel userModel)
-			throws UserException, com.example.rest.Exception.UserException;
+			throws UserException, Exception;
 	ResponseModel logIn(HttpServletRequest request, UserModel userModel) throws Exception;
 	ResponseModel forgotPassword(HttpServletRequest request, UserModel userModel)
 			throws com.example.rest.Exception.UserException;

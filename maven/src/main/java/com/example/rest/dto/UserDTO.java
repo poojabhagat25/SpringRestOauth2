@@ -5,6 +5,7 @@ public class UserDTO {
 	private String firstName;
 	private String lastName;
 	private String emailId;
+	private String profilePic;
 	private String password;
 	private String authToken;
 
@@ -54,6 +55,14 @@ public class UserDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
 	}
 
 }

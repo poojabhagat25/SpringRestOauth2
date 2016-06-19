@@ -11,7 +11,7 @@ import com.example.rest.model.UserModel;
 public interface UserService {
 	public UserDTO getUserByAuthToken(String authToken);
 
-	UserModel saveUser(UserModel userModel, HttpServletRequest request) throws UserException;
+	UserModel saveUser(UserModel userModel, HttpServletRequest request) throws UserException, Exception;
 
 	UserModel logIn(UserModel userModel, HttpServletRequest request) throws Exception;
 

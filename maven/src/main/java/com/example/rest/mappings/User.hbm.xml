@@ -23,6 +23,10 @@
 			<column name="emailId" />
 		</property>
 		
+		<property name="profilePic" type="string">
+			<column name="profilePic" />
+		</property>
+		
 		<property name="password" type="string">
 			<column name="password" />
 		</property>

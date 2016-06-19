@@ -68,6 +68,7 @@
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
+	
 	<!-- Jax-rs Inerceptor -->
 	<cxf:bus>
 		<cxf:inInterceptors>
@@ -102,10 +103,15 @@
 	<!-- Interceptor beans -->
 	<bean class="com.example.rest.interceptor.TokenAuthorizationInterceptor"
 		id="tokenAuthorizationInterceptor" />
-	<bean class="com.example.rest.util.ApplicationBeanUtil"
-		id="applicationBeanUtil" />
+	<bean class="com.example.rest.util.ApplicationBeanUtil" id="applicationBeanUtil" />
 	<bean class="org.apache.cxf.interceptor.LoggingInInterceptor" id="loggingInInterceptor" />
 	<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" id="logOutInterceptor" />
+
+	<!-- Validation class bean -->
+	<bean class="com.example.rest.validationClasses.CustomEmailValidator"
+		id="customEmailValidator" />
+	<bean class="com.example.rest.validationClasses.FileURLValidator"
+		id="fileURLValidator" />
 
 	<!-- web service beans -->
 	<bean class="com.example.rest.webservice.UserWebServiceImpl" id="userWebService"></bean>

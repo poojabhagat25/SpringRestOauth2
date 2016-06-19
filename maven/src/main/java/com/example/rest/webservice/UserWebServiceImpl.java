@@ -56,7 +56,7 @@ public class UserWebServiceImpl implements UserWebService {
 	@POST
 	// @Override
 	public ResponseModel signUpUser(@Context HttpServletRequest request, @Context HttpServletResponse response,
-			UserModel userModel) throws UserException {
+			UserModel userModel) throws UserException,Exception {
 		logger.info("<------inside signUpUser start------>");
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
 		ResponseModel responseModel = null;

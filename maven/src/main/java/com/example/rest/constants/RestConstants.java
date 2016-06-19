@@ -28,5 +28,7 @@ public class RestConstants {
 	public static final String USER_NOT_REGISTERED = "exception.message.phone.not.registered";
 	public static final String PASSWORD_MISMATCH = "exception.password.mismatch";
 	public static final String LOG_IN_FAILED = "exception.login.failed";
+	public static final String EMAIL_IS_NOT_VALID_EXCEPTION= "exception.email.is.not.valid";
+	public static final String URL_IS_NOT_VALID_EXCEPTION = "exception.url.is.not.valid" ;
 
 }

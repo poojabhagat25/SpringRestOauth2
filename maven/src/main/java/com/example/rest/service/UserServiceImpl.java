@@ -21,6 +21,8 @@ import com.example.rest.util.EmailSender;
 import com.example.rest.util.LocaleConverter;
 import com.example.rest.util.ResourceManager;
 import com.example.rest.util.TokenGenerator;
+import com.example.rest.validationClasses.CustomEmailValidator;
+import com.example.rest.validationClasses.FileURLValidator;
 
 import static com.example.rest.constants.RestConstants.NOT_FOUND;
 import static com.example.rest.constants.RestConstants.REGISTER_FAILED_EXCEPTION;
@@ -34,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private CustomEmailValidator customEmailValidator;
+
+	@Autowired
+	private FileURLValidator fileURLValidator;
 
 	@Autowired
 	private Mapper dozerMapper;
@@ -53,7 +61,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	// @Override
-	public UserModel saveUser(UserModel userModel, HttpServletRequest request) throws UserException {
+	public UserModel saveUser(UserModel userModel, HttpServletRequest request) throws UserException, Exception {
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
 		UserDTO userDTO = userDao.checkUser(userModel.getEmailId());
 		if (userDTO != null) {
@@ -61,13 +69,21 @@ public class UserServiceImpl implements UserService {
 			throw new UserException(ResourceManager.getMessage(USER_ALREADY_EXIST_EXCEPTION, null, NOT_FOUND, locale));
 
 		}
+		
+		if (userModel.getEmailId() != null || !(userModel.getEmailId().trim().isEmpty())) {
+			customEmailValidator.validateEmail(userModel.getEmailId());
+		}
+		if (userModel.getProfilePic() != null || !(userModel.getProfilePic().trim().isEmpty())) {
+			fileURLValidator.validateURL(userModel.getProfilePic(), "profilePic");
+		}
+		
 		userDTO = dozerMapper.map(userModel, UserDTO.class);
 
 		try {
 			String authToken = TokenGenerator.generateToken(userModel.getEmailId() + new Date());
 			userDTO.setAuthToken(authToken);
 			userDTO = userDao.saveUser(userDTO);
-			
+
 			// To send an email after successful registration.
 			EmailDTO emailDTO = new EmailDTO();
 			emailDTO.setTo(userDTO.getEmailId());
@@ -107,8 +123,8 @@ public class UserServiceImpl implements UserService {
 		}
 		return userModel;
 	}
-	
-//	@Override
+
+	// @Override
 	public void forgotPassword(HttpServletRequest request, String email) throws UserException {
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
 		EmailDTO emailDTO = new EmailDTO();
@@ -118,7 +134,6 @@ public class UserServiceImpl implements UserService {
 			logger.error(ResourceManager.getMessage(USER_NOT_REGISTERED, null, NOT_FOUND, locale));
 			throw new UserException(ResourceManager.getMessage(USER_NOT_REGISTERED, null, NOT_FOUND, locale));
 		}
-
 
 		emailDTO.setFrom("Rest API Demo");
 		emailDTO.setTo(retrievedUser.getEmailId());
@@ -133,21 +148,21 @@ public class UserServiceImpl implements UserService {
 		}
 
 	}
-	
-//	@Override
-	public List<UserModel> getUserList()throws Exception{
-		List<UserModel> userModels = new ArrayList<UserModel>() ;
-		try{
+
+	// @Override
+	public List<UserModel> getUserList() throws Exception {
+		List<UserModel> userModels = new ArrayList<UserModel>();
+		try {
 			List<UserDTO> userDTOs = userDao.getUserList();
-			for(UserDTO userDTO:userDTOs){
+			for (UserDTO userDTO : userDTOs) {
 				UserModel userModel = dozerMapper.map(userDTO, UserModel.class);
 				userModels.add(userModel);
 			}
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			throw ex;
 		}
 		return userModels;
-		
+
 	}
 
 }

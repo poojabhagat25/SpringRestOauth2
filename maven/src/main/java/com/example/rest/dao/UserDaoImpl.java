@@ -23,6 +23,18 @@ public class UserDaoImpl extends BaseDAO implements UserDao {
 		}
 		return userDetailsList;
 	}
+	
+	@Override
+	public UserDTO getUserById(int userId) throws HibernateException {
+		UserDTO userDTO = null;
+		try {
+			Session session = getCurrentSession();
+			userDTO = (UserDTO) session.createCriteria(UserDTO.class)
+					.add(Restrictions.eq("id", userId)).uniqueResult();
+		} catch (HibernateException exception) {
+		}
+		return userDTO;
+	}
 
 	// @Override
 	public UserDTO checkUser(String emailId) {
@@ -60,4 +72,13 @@ public class UserDaoImpl extends BaseDAO implements UserDao {
 		return userDTOs;
 	}
 
+	@Override
+	public void deleteUser(UserDTO userDTO)throws HibernateException{
+		try{
+			delete(userDTO);
+		}catch(HibernateException ex){
+			throw ex;
+		}
+	}
+	
 }

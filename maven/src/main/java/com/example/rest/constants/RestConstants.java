@@ -3,7 +3,7 @@ package com.example.rest.constants;
 public class RestConstants {
 
 	public static final String AUTHTOKEN = "authToken";
-	public static final String SIGN_UP_USER_URL = "/user";
+	public static final String SIGN_UP_USER_URL = "/user/v1";
 	public static final String LOGIN_URL = "/logIn";
 	public static final String FORGOT_PASSWORD = "/forgot_password";
 	public static final String AUTHTOKEN_KEYWORD = "authToken= ";
@@ -19,6 +19,7 @@ public class RestConstants {
 	public static final String USER_LOGGED_IN_SUCCESSFULLY = "message.user.logedin.successfully";
     public static final String PASSWORD_SENT_SUCCESSFULLY = "message.password.sent.successfully";
     public static final String USER_LIST_SENT_SUCCESSFULLY = "message.user.list.sent.successfully";
+    public static final String USER_DELETED_SUCCESSFULLY="message.user.deleted.successfully";
     
 	// Exception Messages
 	public static final String NOT_FOUND = "not.found";
@@ -30,5 +31,7 @@ public class RestConstants {
 	public static final String LOG_IN_FAILED = "exception.login.failed";
 	public static final String EMAIL_IS_NOT_VALID_EXCEPTION= "exception.email.is.not.valid";
 	public static final String URL_IS_NOT_VALID_EXCEPTION = "exception.url.is.not.valid" ;
+	public static final String PLEASE_FILL_ALL_REQUIRED_FIELDS="exception.fill.all.required.fields";
+
 
 }

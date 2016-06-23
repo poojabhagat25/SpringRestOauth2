@@ -1,5 +1,6 @@
 package com.example.rest.Exception;
 
+@SuppressWarnings("serial")
 public class UserException extends Exception{
 
 	public UserException() {

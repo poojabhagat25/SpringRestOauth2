@@ -26,7 +26,6 @@ import static com.example.rest.constants.RestConstants.AUTHTOKEN_KEYWORD;
 import static com.example.rest.constants.RestConstants.USER;
 import static com.example.rest.constants.RestConstants.LOGIN_URL;
 import static com.example.rest.constants.RestConstants.FORGOT_PASSWORD;
-import static com.example.rest.constants.RestConstants.NOT_FOUND;
 import static com.example.rest.constants.RestConstants.SIGN_UP_USER_URL;
 import static com.example.rest.constants.RestConstants.FAIL;
 
@@ -85,7 +84,7 @@ public class TokenAuthorizationInterceptor extends
 				}
 				HttpServletResponse response = (HttpServletResponse) message
 						.get(AbstractHTTPDestination.HTTP_RESPONSE);
-				response.setStatus(500);
+				response.setStatus(401);
 				try {
 					response.getWriter().write(errorResponse);
 				} catch (IOException e) {

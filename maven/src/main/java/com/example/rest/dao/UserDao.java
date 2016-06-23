@@ -16,4 +16,8 @@ public interface UserDao {
 
 	List<UserDTO> getUserList() throws HibernateException;
 
+	void deleteUser(UserDTO userDTO) throws HibernateException;
+
+	UserDTO getUserById(int userId) throws HibernateException;
+
 }

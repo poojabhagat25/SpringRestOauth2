@@ -68,7 +68,7 @@
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
-	
+
 	<!-- Jax-rs Inerceptor -->
 	<cxf:bus>
 		<cxf:inInterceptors>
@@ -87,18 +87,19 @@
 	</cxf:bus>
 
 	<!-- Jax-rs services -->
-	<jaxrs:server address="/user">
+	<jaxrs:server address="/" id="restServices">
 		<jaxrs:serviceBeans>
 			<ref bean="userWebService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<ref bean="jsonProvider"></ref>
 		</jaxrs:providers>
-		<jaxrs:extensionMappings>
-			<entry key="json" value="application/json" />
-			<entry key="xml" value="application/xml" />
-		</jaxrs:extensionMappings>
 	</jaxrs:server>
+	<!-- <jaxrs:server address="/user"> <jaxrs:serviceBeans> <ref bean="userWebService" 
+		/> </jaxrs:serviceBeans> <jaxrs:providers> <ref bean="jsonProvider"></ref> 
+		</jaxrs:providers> <jaxrs:extensionMappings> <entry key="json" value="application/json" 
+		/> <entry key="xml" value="application/xml" /> </jaxrs:extensionMappings> 
+		</jaxrs:server> -->
 
 	<!-- Interceptor beans -->
 	<bean class="com.example.rest.interceptor.TokenAuthorizationInterceptor"
@@ -112,6 +113,8 @@
 		id="customEmailValidator" />
 	<bean class="com.example.rest.validationClasses.FileURLValidator"
 		id="fileURLValidator" />
+	<bean class="com.example.rest.util.FieldValidation" id="fieldValidation" />
+
 
 	<!-- web service beans -->
 	<bean class="com.example.rest.webservice.UserWebServiceImpl" id="userWebService"></bean>

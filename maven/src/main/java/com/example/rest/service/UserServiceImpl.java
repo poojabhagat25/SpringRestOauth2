@@ -18,6 +18,7 @@ import com.example.rest.dto.UserDTO;
 import com.example.rest.model.UserModel;
 import com.example.rest.util.ApplicationBeanUtil;
 import com.example.rest.util.EmailSender;
+import com.example.rest.util.FieldValidation;
 import com.example.rest.util.LocaleConverter;
 import com.example.rest.util.ResourceManager;
 import com.example.rest.util.TokenGenerator;
@@ -44,6 +45,9 @@ public class UserServiceImpl implements UserService {
 	private FileURLValidator fileURLValidator;
 
 	@Autowired
+	private FieldValidation fieldValidation;
+	
+	@Autowired
 	private Mapper dozerMapper;
 
 	public void setUserDao(UserDao userDao) {
@@ -64,19 +68,21 @@ public class UserServiceImpl implements UserService {
 	public UserModel saveUser(UserModel userModel, HttpServletRequest request) throws UserException, Exception {
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
 		UserDTO userDTO = userDao.checkUser(userModel.getEmailId());
+		
+		fieldValidation.signUpValidation(userModel);
 		if (userDTO != null) {
 			// already exist
 			throw new UserException(ResourceManager.getMessage(USER_ALREADY_EXIST_EXCEPTION, null, NOT_FOUND, locale));
 
 		}
-		
-		if (userModel.getEmailId() != null || !(userModel.getEmailId().trim().isEmpty())) {
+
+		if (userModel.getEmailId() != null && !(userModel.getEmailId().trim().isEmpty())) {
 			customEmailValidator.validateEmail(userModel.getEmailId());
 		}
-		if (userModel.getProfilePic() != null || !(userModel.getProfilePic().trim().isEmpty())) {
+		if (userModel.getProfilePic() != null && !(userModel.getProfilePic().trim().isEmpty())) {
 			fileURLValidator.validateURL(userModel.getProfilePic(), "profilePic");
 		}
-		
+
 		userDTO = dozerMapper.map(userModel, UserDTO.class);
 
 		try {
@@ -127,26 +133,32 @@ public class UserServiceImpl implements UserService {
 	// @Override
 	public void forgotPassword(HttpServletRequest request, String email) throws UserException {
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
-		EmailDTO emailDTO = new EmailDTO();
-
-		UserDTO retrievedUser = userDao.checkUser(email);
-		if (retrievedUser == null) {
-			logger.error(ResourceManager.getMessage(USER_NOT_REGISTERED, null, NOT_FOUND, locale));
-			throw new UserException(ResourceManager.getMessage(USER_NOT_REGISTERED, null, NOT_FOUND, locale));
-		}
-
-		emailDTO.setFrom("Rest API Demo");
-		emailDTO.setTo(retrievedUser.getEmailId());
-		emailDTO.setUsername(retrievedUser.getFirstName());
-		emailDTO.setPassword(retrievedUser.getPassword());
 		try {
-			// Working code using velocity dependancies
-			EmailSender emailSender = (EmailSender) ApplicationBeanUtil.getApplicationContext().getBean("mail");
-			emailSender.sendForgotPasswordMail(emailDTO);
-		} catch (Exception e) {
-			logger.error(e.getMessage() + e.getStackTrace());
-		}
+			EmailDTO emailDTO = new EmailDTO();
 
+			UserDTO retrievedUser = userDao.checkUser(email);
+			if (retrievedUser == null) {
+				logger.error(ResourceManager.getMessage(USER_NOT_REGISTERED, null, NOT_FOUND, locale));
+				throw new UserException(ResourceManager.getMessage(USER_NOT_REGISTERED, null, NOT_FOUND, locale));
+			}
+
+			emailDTO.setFrom("Rest API Demo");
+			emailDTO.setTo(retrievedUser.getEmailId());
+			emailDTO.setUsername(retrievedUser.getFirstName());
+			emailDTO.setPassword(retrievedUser.getPassword());
+			try {
+				// Working code using velocity dependancies
+				EmailSender emailSender = (EmailSender) ApplicationBeanUtil.getApplicationContext().getBean("mail");
+				emailSender.sendForgotPasswordMail(emailDTO);
+			} catch (Exception e) {
+				logger.error(e.getMessage() + e.getStackTrace());
+			}
+		} catch (UserException ue) {
+			throw ue;
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw e;
+		}
 	}
 
 	// @Override
@@ -164,5 +176,17 @@ public class UserServiceImpl implements UserService {
 		return userModels;
 
 	}
+	
+	
+	 @Override
+		public void deleteUser(int userId) throws Exception {
+			try {
+				UserDTO userDTO = userDao.getUserById(userId);
+				userDao.deleteUser(userDTO);
+			} catch (Exception ex) {
+				throw ex;
+			}
+
+		}
 
 }

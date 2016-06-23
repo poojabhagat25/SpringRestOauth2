@@ -18,4 +18,6 @@ public interface UserService {
 	void forgotPassword(HttpServletRequest request, String email) throws UserException;
 
 	List<UserModel> getUserList()throws Exception;
+
+	void deleteUser(int UserId) throws Exception;
 }

@@ -31,4 +31,9 @@ public class BaseDAO {
 		session = getCurrentSession();
 		session.save(obj);
 	}
+	
+	public void delete(Object obj) {
+		session = getCurrentSession();
+		session.delete(obj);
+	}
 }

@@ -130,10 +130,10 @@
 
 
 	<!-- Swagger API listing resource -->
-	<bean id="swaggerResourceJSON"
-		class="com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON" />
+	<!-- <bean id="swaggerResourceJSON"
+		class="com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON" /> -->
 	<!-- Swagger writers -->
-	<bean id="resourceWriter"
+<!-- 	<bean id="resourceWriter"
 		class="com.wordnik.swagger.jaxrs.listing.ResourceListingProvider" />
 	<bean id="apiWriter"
 		class="com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider" />
@@ -160,5 +160,5 @@
 		<property name="scan" value="true" />
 	</bean>
 
-
+ -->
 </beans>

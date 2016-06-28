@@ -1,4 +1,4 @@
-The flow of application :
+<br>The flow of application :<br>
 Fetch request_token:
 1) User sends a GET request to server with five parameters: grant_type, username, password, client_id, client_secret; something like this:
 http://localhost:8080/SpringRestOauth2/oauth/token?grant_type=password&client_id=restapp&client_secret=restapp&username=beingjavaguys&password=spring@java

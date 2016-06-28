@@ -23,20 +23,19 @@ public class UserDaoImpl extends BaseDAO implements UserDao {
 		}
 		return userDetailsList;
 	}
-	
+
 	@Override
 	public UserDTO getUserById(int userId) throws HibernateException {
 		UserDTO userDTO = null;
 		try {
 			Session session = getCurrentSession();
-			userDTO = (UserDTO) session.createCriteria(UserDTO.class)
-					.add(Restrictions.eq("id", userId)).uniqueResult();
+			userDTO = (UserDTO) session.createCriteria(UserDTO.class).add(Restrictions.eq("id", userId)).uniqueResult();
 		} catch (HibernateException exception) {
 		}
 		return userDTO;
 	}
 
-	// @Override
+	@Override
 	public UserDTO checkUser(String emailId) {
 		UserDTO user = null;
 		try {
@@ -49,7 +48,7 @@ public class UserDaoImpl extends BaseDAO implements UserDao {
 		return user;
 	}
 
-	// @Override
+	@Override
 	public UserDTO saveUser(UserDTO userDTO) {
 		try {
 			save(userDTO);
@@ -58,14 +57,14 @@ public class UserDaoImpl extends BaseDAO implements UserDao {
 		}
 		return userDTO;
 	}
-	
-//	@Override
+
+	@Override
 	@SuppressWarnings("unchecked")
-	public List<UserDTO> getUserList()throws HibernateException {
+	public List<UserDTO> getUserList() throws HibernateException {
 		List<UserDTO> userDTOs = null;
 		try {
 			Criteria criteria = getCurrentSession().createCriteria(UserDTO.class);
-			userDTOs =  criteria.list();
+			userDTOs = criteria.list();
 		} catch (HibernateException exception) {
 			logger.error(exception.getMessage(), exception);
 		}
@@ -73,12 +72,12 @@ public class UserDaoImpl extends BaseDAO implements UserDao {
 	}
 
 	@Override
-	public void deleteUser(UserDTO userDTO)throws HibernateException{
-		try{
+	public void deleteUser(UserDTO userDTO) throws HibernateException {
+		try {
 			delete(userDTO);
-		}catch(HibernateException ex){
+		} catch (HibernateException ex) {
 			throw ex;
 		}
 	}
-	
+
 }

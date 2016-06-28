@@ -127,4 +127,38 @@
 
 	<!-- Dao beans -->
 	<bean class="com.example.rest.dao.UserDaoImpl" id="userDao"></bean>
+
+
+	<!-- Swagger API listing resource -->
+	<bean id="swaggerResourceJSON"
+		class="com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON" />
+	<!-- Swagger writers -->
+	<bean id="resourceWriter"
+		class="com.wordnik.swagger.jaxrs.listing.ResourceListingProvider" />
+	<bean id="apiWriter"
+		class="com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider" />
+
+	<jaxrs:server address="/sw" id="swagger">
+		<jaxrs:serviceBeans>
+			<ref bean="userWebService" />
+			<ref bean="swaggerResourceJSON" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean="resourceWriter" />
+			<ref bean="apiWriter" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<bean id="swaggerConfig" class="com.wordnik.swagger.jaxrs.config.BeanConfig">
+		<property name="resourcePackage" value="com.example.swagger" />
+		<property name="version" value="2.0" />
+		<property name="basePath" value="http://localhost:8080/SpringRestOauth2/api" />
+		<property name="title" value="Swagger UI Integration Sample" />
+		<property name="description"
+			value="Swagger UI Integration Sample for demonstrating its working." />
+		<property name="contact" value="pooja@yopmail.com" />
+		<property name="scan" value="true" />
+	</bean>
+
+
 </beans>

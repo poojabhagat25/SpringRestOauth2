@@ -59,8 +59,19 @@ public class UserWebServiceImpl implements UserWebService {
 	 * }
 	 */
 
+	
+	/**
+	 * This method is for sign-up user.
+	 * 
+	 * @param UserModel
+	 *            contains user data
+	 * @param HttpServletRequest
+	 * @param HttpServletResponse
+	 * @return UserModel.
+	 * @throws UserException, Exception
+	 */
 	@POST
-	// @Override
+	@Override
 	/**
 	 * Rest Best Practice => Version your API : Make the API Version mandatory
 	 * and do not release an unversioned API. Use a simple ordinal number and
@@ -78,19 +89,27 @@ public class UserWebServiceImpl implements UserWebService {
 		responseModel.setObject(userModel);
 		responseModel
 				.setMessage(ResourceManager.getMessage(USER_REGISTERED_SUCCESSFULLY_MESSAGE, null, NOT_FOUND, locale));
-		
+
 		/*
-		 * Rest Best Practice =>
-		 * Handle Errors with HTTP status codes
-		 * 201 – OK – New resource has been created
+		 * Rest Best Practice => Handle Errors with HTTP status codes 201 – OK –
+		 * New resource has been created
 		 */
 		response.setStatus(201);
 		return responseModel;
 	}
 
+	/**
+	 * This method is for login purpose.
+	 * 
+	 * @param UserModel
+	 *            contains user emailId and password.
+	 * @param HttpServletRequest
+	 * @return UserModel.
+	 * @throws Exception
+	 */
 	@POST
 	@Path("/v1/logIn")
-	// @Override
+	@Override
 	public ResponseModel logIn(@Context HttpServletRequest request, UserModel userModel) throws Exception {
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
 		ResponseModel responseModel = null;
@@ -99,17 +118,26 @@ public class UserWebServiceImpl implements UserWebService {
 		responseModel = ResponseModel.getInstance();
 		responseModel.setObject(userModel);
 		responseModel.setMessage(ResourceManager.getMessage(USER_LOGGED_IN_SUCCESSFULLY, null, NOT_FOUND, locale));
-		
+
 		/*
-		 * This API by default returns Http status code 200 on success.
-		 * 200 – OK – Everything is working
+		 * This API by default returns Http status code 200 on success. 200 – OK
+		 * – Everything is working
 		 */
 		return responseModel;
 	}
 
+	/**
+	 * forgot_password API.
+	 * 
+	 * @param UserModel
+	 *            contains user email address.
+	 * @param HttpServletRequest
+	 * @return UserModel.
+	 * @throws UserException
+	 */
 	@POST
 	@Path("/v1/forgot_password")
-	// @Override
+	@Override
 	public ResponseModel forgotPassword(@Context HttpServletRequest request, UserModel userModel) throws UserException {
 		logger.info("<------Forgot Password start------>");
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
@@ -119,8 +147,16 @@ public class UserWebServiceImpl implements UserWebService {
 		return responseModel;
 	}
 
+	/**
+	 * API to get all users.
+	 * 
+	 * @param HttpServletRequest
+	 * @return List<UserModel>.
+	 * @throws Exception
+	 */
 	@GET
 	@Path("/v1")
+	@Override
 	public ResponseModel getUserList(@Context HttpServletRequest request) throws Exception {
 		logger.info("<------User List------>");
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
@@ -130,32 +166,39 @@ public class UserWebServiceImpl implements UserWebService {
 		responseModel.setMessage(ResourceManager.getMessage(USER_LIST_SENT_SUCCESSFULLY, null, NOT_FOUND, locale));
 		return responseModel;
 	}
+
 	
 	
 	/**
-	 * Best Rest Practice =>
-	 * Use appropriate http method.
-	 * e.g here we use DELETE because we want to delete user's record.
+	 * API to delete user record.
+	 * 
+	 * @param int userId
+	 * @param HttpServletRequest
+	 * @param HttpServletResponse
+	 * @return void
+	 * @throws UserException
+	 */
+	/**
+	 * Best Rest Practice => Use appropriate http method. e.g here we use DELETE
+	 * because we want to delete user's record.
 	 */
 	@Override
 	@DELETE
 	@Path("/v1")
-	public ResponseModel deleteUser(@Context HttpServletRequest request,@Context HttpServletResponse response,@QueryParam(value="userId")int userId) throws Exception {
+	public ResponseModel deleteUser(@Context HttpServletRequest request, @Context HttpServletResponse response,
+			@QueryParam(value = "userId") int userId) throws Exception {
 		logger.info("<------User List------>");
 		Locale locale = LocaleConverter.getLocaleFromRequest(request);
 		userService.deleteUser(userId);
 		ResponseModel responseModel = ResponseModel.getInstance();
 		responseModel.setMessage(ResourceManager.getMessage(USER_DELETED_SUCCESSFULLY, null, NOT_FOUND, locale));
-		
+
 		/*
-		 * Rest Best Practice =>
-		 * Handle Errors with HTTP status codes
-		 * 204 – OK – The resource was successfully deleted
+		 * Rest Best Practice => Handle Errors with HTTP status codes 204 – OK –
+		 * The resource was successfully deleted
 		 */
 		response.setStatus(204);
 		return responseModel;
 	}
 
-	
-	
 }
